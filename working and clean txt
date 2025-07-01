@@ -1,0 +1,120 @@
+from fastapi import FastAPI, File, UploadFile
+import cv2
+import numpy as np
+import pytesseract
+import os
+import uuid
+import re
+
+app = FastAPI()
+
+DEBUG_DIR = "debug_images"
+os.makedirs(DEBUG_DIR, exist_ok=True)
+
+def save_debug_image(image, step):
+    filename = os.path.join(DEBUG_DIR, f"{step}.png")
+    success = cv2.imwrite(filename, image)
+    print(f"[DEBUG] Saved {filename}: {success}")
+
+def sharpen_edge(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (7, 7), 0)
+    kern = cv2.getStructuringElement(cv2.MORPH_RECT, (11, 11))
+    dil = cv2.dilate(blur, kern, iterations=2)
+    closed = cv2.morphologyEx(dil, cv2.MORPH_CLOSE, kern, iterations=2)
+    edged = cv2.Canny(closed, 30, 100)
+    return edged
+
+def binarize(edged):
+    mean = np.mean(edged)
+    _, binary = cv2.threshold(edged, mean, 255, cv2.THRESH_BINARY)
+    kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    dilated = cv2.dilate(binary, kern, iterations=2)
+    return dilated
+
+def find_receipt_bb(binary, orig):
+    cnts = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cnts[0] if isinstance(cnts, tuple) else cnts
+    if not cnts:
+        raise ValueError("No contours found")
+    largest = max(cnts, key=cv2.contourArea)
+    rect = cv2.minAreaRect(largest)
+    img_box = cv2.drawContours(orig.copy(), [np.intp(cv2.boxPoints(rect))], 0, (0, 250, 0), 10)
+    return largest, rect, img_box
+
+def shrink_box(box_points, shrink_ratio=0.9):
+    center = np.mean(box_points, axis=0)
+    new_box = center + shrink_ratio * (box_points - center)
+    return new_box
+
+def four_point_crop(img, pts, padding=10):
+    rect = cv2.boundingRect(pts.astype(int))
+    x, y, w, h = rect
+    x = max(x - padding, 0)
+    y = max(y - padding, 0)
+    w = min(w + 2*padding, img.shape[1] - x)
+    h = min(h + 2*padding, img.shape[0] - y)
+    cropped = img[y:y+h, x:x+w]
+    return cropped
+
+def enhance_text(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    binary = cv2.adaptiveThreshold(
+        gray, 255,
+        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.THRESH_BINARY,
+        15, 10
+    )
+    return binary
+
+@app.post("/ocr/")
+async def ocr_endpoint(file: UploadFile = File(...)):
+    uid = str(uuid.uuid4())[:8]
+    print(f"[DEBUG] OCR request ID: {uid}")
+
+    contents = await file.read()
+    npimg = np.frombuffer(contents, np.uint8)
+    img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+    if img is None:
+        return {"error": "Failed to load image"}
+
+    save_debug_image(img, "original")
+
+    edged = sharpen_edge(img)
+    save_debug_image(edged, "edged")
+
+    bin_img = binarize(edged)
+    save_debug_image(bin_img, "binarized")
+
+    try:
+        contour, rect, boxed = find_receipt_bb(bin_img, img)
+    except ValueError as e:
+        return {"error": str(e)}
+    save_debug_image(boxed, "contours")
+
+    box = cv2.boxPoints(rect)
+    box = np.array(box, dtype=np.float32)
+
+    # Shrink the box to tighten the green contour border around receipt
+    box = shrink_box(box, shrink_ratio=0.9)
+
+    # Draw the shrunken box for debug
+    img_with_shrunk_box = cv2.drawContours(img.copy(), [np.intp(box)], 0, (0, 250, 0), 3)
+    save_debug_image(img_with_shrunk_box, "shrunken_box")
+
+    # Crop image with small padding to avoid cropping off text
+    cropped = four_point_crop(img, box, padding=3)
+    save_debug_image(cropped, "cropped")
+
+    enhanced = enhance_text(cropped)
+    save_debug_image(enhanced, "enhanced")
+
+    txt = pytesseract.image_to_string(enhanced, lang='hrv', config='--psm 3 --oem 3')
+    lines = [line.strip() for line in txt.strip().split('\n') if line.strip()]
+
+    print(f"[DEBUG] OCR extracted lines:\n{lines}")
+
+    return {
+        "lines": lines,
+        "debug_folder": os.path.abspath(DEBUG_DIR)
+    }

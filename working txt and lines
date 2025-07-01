@@ -1,0 +1,135 @@
+from fastapi import FastAPI, File, UploadFile
+import cv2
+import numpy as np
+import imutils
+import pytesseract
+import os
+import uuid
+import re
+
+app = FastAPI()
+
+# Directory for debug images
+DEBUG_DIR = "debug_images"
+os.makedirs(DEBUG_DIR, exist_ok=True)
+
+def save_debug_image(image, step):
+    os.makedirs(DEBUG_DIR, exist_ok=True)
+    filename = os.path.join(DEBUG_DIR, f"{step}.png")
+    success = cv2.imwrite(filename, image)
+    print(f"Saved {filename}: {success}")
+
+
+def orient_vertical(img):
+    h, w = img.shape[:2]
+    result = imutils.rotate(img, angle=270) if w > h else img
+    return result
+
+def fix_orientation(img):
+    osd = pytesseract.image_to_osd(img)
+    rotation = int(re.search('Rotate: (\d+)', osd).group(1))
+    if rotation != 0:
+        return imutils.rotate(img, angle=360 - rotation)
+    return img
+
+def sharpen_edge(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (7, 7), 0)
+    kern = cv2.getStructuringElement(cv2.MORPH_RECT, (11, 11))
+    dil = cv2.dilate(blur, kern, iterations=2)
+    mean_val = np.mean(gray)
+    lower = max(10, int(mean_val * 0.66))
+    upper = max(50, int(mean_val * 1.33))
+    closed = cv2.morphologyEx(dil, cv2.MORPH_CLOSE, kern, iterations=2)  # closing to fill edges
+    edged = cv2.Canny(closed, 30, 100)
+    return edged
+
+def binarize(edged):
+    mean = np.mean(edged)
+    _, binary = cv2.threshold(edged, mean, 255, cv2.THRESH_BINARY)
+    kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    dilated = cv2.dilate(binary, kern, iterations=2)
+    return dilated
+
+def find_receipt_bb(binary, orig):
+    cnts = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cnts[0] if isinstance(cnts, tuple) else cnts
+    if not cnts:
+        raise ValueError("No contours found")
+    largest = max(cnts, key=cv2.contourArea)
+    rect = cv2.minAreaRect(largest)
+    box = np.intp(cv2.boxPoints(rect))
+    img_box = cv2.drawContours(orig.copy(), [box], 0, (0,250,0), 10)
+    return largest, rect, img_box
+
+def adjust_tilt(img, rect):
+    angle = rect[2]
+    if angle < -45:
+        angle += 90
+    rotated = imutils.rotate_bound(img, -angle)
+    return rotated
+
+def crop_to_receipt(img, contour):
+    x, y, w, h = cv2.boundingRect(contour)
+    cropped = img[y:y+h, x:x+w]
+    return cropped
+
+def enhance_text(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return binary
+
+
+@app.post("/ocr/")
+async def ocr_endpoint(file: UploadFile = File(...)):
+    uid = str(uuid.uuid4())[:8]  # unique ID for this request
+
+    print(f"[DEBUG] OCR endpoint hit! ID: {uid}")
+    print(f"[DEBUG] Current working directory: {os.getcwd()}")
+
+    contents = await file.read()
+    npimg = np.frombuffer(contents, np.uint8)
+    img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+
+    if img is None:
+        return {"error": "Failed to load image"}
+
+    save_debug_image(img, "original")
+
+    vert = orient_vertical(img)
+    save_debug_image(vert, "oriented")
+
+    edged = sharpen_edge(vert)
+    save_debug_image(edged, "edged")
+
+    bin_img = binarize(edged)
+    save_debug_image(bin_img, "binarized")
+
+    try:
+        contour, rect, boxed = find_receipt_bb(bin_img, vert)
+    except ValueError as e:
+        return {"error": str(e)}
+
+    save_debug_image(boxed, "contours")
+
+    tilted = adjust_tilt(boxed, rect)
+    save_debug_image(tilted, "tilted")
+
+    cropped = crop_to_receipt(tilted, contour)
+    save_debug_image(cropped, "cropped")
+
+    enhanced = enhance_text(cropped)
+    save_debug_image(enhanced, "enhanced")
+
+    # ✅ Fix orientation after enhancement, before OCR
+    enhanced = fix_orientation(enhanced)
+    save_debug_image(enhanced, "oriented_text")  # optional, for debugging
+
+    # Perform OCR
+    txt = pytesseract.image_to_string(enhanced, lang='hrv', config='--psm 6 --oem 1')
+    lines = [line.strip() for line in txt.strip().split('\n') if line.strip()]
+
+    return {
+        "lines": lines,
+        "debug_folder": os.path.abspath(DEBUG_DIR)
+    }
