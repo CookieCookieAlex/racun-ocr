@@ -1,6 +1,7 @@
 # racun-ocr
 started to play with ocr's
 
+the main file that works as intended is main.py
 
 to run this code run use "uvicorn main:app --reload" in the terminal
 
