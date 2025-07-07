@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "racun-ocr"
+version = "0.1.0"
+description = "Receipt reader for tracking bills and costs"
+authors = ["Your Name <you@example.com>"]
+packages = [
+    { include = "app" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+fastapi = "^0.115.14"
+uvicorn = "^0.35.0"
+opencv-python = "^4.11.0.86"
+numpy = "^2.3.1"
+pytesseract = "^0.3.13"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

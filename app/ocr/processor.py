@@ -1,10 +1,6 @@
-from fastapi import FastAPI, File, UploadFile
 import cv2
 import numpy as np
-import pytesseract
 import os
-
-app = FastAPI()
 
 DEBUG_DIR = "debug_images"
 os.makedirs(DEBUG_DIR, exist_ok=True)
@@ -63,7 +59,6 @@ def crop_by_corners(img, pts, padding=10):
     heightB = np.linalg.norm(tl - bl)
     maxHeight = max(int(heightA), int(heightB))
 
-    # Ensure padding doesn't invert coords
     pad_w = min(padding, maxWidth // 4)
     pad_h = min(padding, maxHeight // 4)
 
@@ -87,64 +82,3 @@ def enhance_text(img):
         15, 10
     )
     return binary
-
-@app.post("/ocr/")
-async def ocr_endpoint(file: UploadFile = File(...)):
-    contents = await file.read()
-    npimg = np.frombuffer(contents, np.uint8)
-    img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-    if img is None:
-        return {"error": "Failed to load image"}
-
-    save_debug_image(img, "original")
-
-    edged = sharpen_edge(img)
-    save_debug_image(edged, "edged")
-
-    bin_img = binarize(edged)
-    save_debug_image(bin_img, "binarized")
-
-    cnts = cv2.findContours(bin_img, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-    cnts = cnts[0] if isinstance(cnts, tuple) else cnts
-    if not cnts:
-        return {"error": "No contours found"}
-
-    # Find largest contour by area
-    largest = max(cnts, key=cv2.contourArea)
-
-    peri = cv2.arcLength(largest, True)
-    approx = cv2.approxPolyDP(largest, 0.02 * peri, True)
-
-    # Accept 3 or 4 points, else fallback
-    if len(approx) < 4:
-        rect = cv2.minAreaRect(largest)
-        box = cv2.boxPoints(rect)
-        box = np.array(box, dtype="float32")
-    elif len(approx) == 4:
-        box = approx.reshape(4, 2).astype("float32")
-    else:
-        hull = cv2.convexHull(largest)
-        rect = cv2.minAreaRect(hull)
-        box = cv2.boxPoints(rect)
-        box = np.array(box, dtype="float32")
-
-    # Draw contour box
-    img_box = img.copy()
-    cv2.drawContours(img_box, [box.astype(int)], -1, (0, 255, 0), 5)
-    save_debug_image(img_box, "contour_box")
-
-    cropped = crop_by_corners(img, box, padding=10)
-    save_debug_image(cropped, "cropped")
-
-    enhanced = enhance_text(cropped)
-    save_debug_image(enhanced, "enhanced")
-
-    txt = pytesseract.image_to_string(enhanced, lang='hrv', config='--psm 3 --oem 3')
-    lines = [line.strip() for line in txt.strip().split('\n') if line.strip()]
-
-    print(f"[DEBUG] OCR extracted lines:\n{lines}")
-
-    return {
-        "lines": lines,
-        "debug_folder": os.path.abspath(DEBUG_DIR)
-    }
