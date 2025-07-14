@@ -182,31 +182,3 @@ def find_receipt_contour(img):
         return np.array(box, dtype="float32")
 
     return None
-
-def preprocess_for_ocr(img):
-    """
-    Full OCR preprocessing pipeline:
-    - Find receipt contour
-    - Crop it
-    - Enhance text for better OCR
-    Returns: (preprocessed image, status label)
-    """
-    contour = find_receipt_contour(img)
-
-    if contour is None:
-        print("[WARN] Could not find receipt contour.")
-        return None, "no_contour"
-
-    cropped = crop_by_corners(img, contour)
-
-    if cropped is None:
-        print("[WARN] Cropping failed.")
-        return None, "crop_failed"
-
-    enhanced = enhance_text(cropped)
-
-    if enhanced is None:
-        print("[WARN] Text enhancement failed.")
-        return None, "enhance_failed"
-
-    return enhanced, "ok"
