@@ -1,24 +1,28 @@
 from fastapi import APIRouter, File, UploadFile, Depends, HTTPException
-import numpy as np
-import cv2
-import pytesseract
-import logging
 from sqlalchemy.orm import Session
-from app.db.session import get_db
-from app.db import crud, schemas
 from datetime import datetime
+import logging
 
+from app.db.session import get_db
+from app.db import schemas
 from app.ocr import processor, parser
+from app.ocr.image_loader import load_image
+from app.ocr.ocr_service import run_ocr_with_fallback
+from app.ocr.receipt_service import save_receipt
 
 router = APIRouter()
 
+
 @router.post("/test-user/", response_model=schemas.UserOut)
 def create_test_user(db: Session = Depends(get_db)):
-    """Create a simple user for testing."""
-    from app.db.models import User
+    """
+    Creates a test user if one doesn't already exist.
+    Useful for initial testing without full auth system.
+    """
+    from app.db import models
     from sqlalchemy.exc import IntegrityError
 
-    test_user = User(
+    test_user = models.User(
         username="test_user",
         email="test@example.com",
         hashed_password="notsecure",
@@ -30,12 +34,13 @@ def create_test_user(db: Session = Depends(get_db)):
         db.refresh(test_user)
     except IntegrityError:
         db.rollback()
-        existing = db.query(User).filter_by(username="test_user").first()
+        existing = db.query(models.User).filter_by(username="test_user").first()
         if existing:
             return existing
         raise HTTPException(status_code=500, detail="Couldn't create or fetch test user.")
 
     return test_user
+
 
 @router.post("/upload-receipt/")
 async def upload_receipt_for_user(
@@ -43,183 +48,77 @@ async def upload_receipt_for_user(
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
+    """
+    Uploads an image file, performs OCR, parses the result,
+    and saves the receipt data into the database.
+    """
     try:
-        import numpy as np
-        import cv2
-        from app.db import models
-        from app.ocr import processor, parser
-        import pytesseract
-        from datetime import datetime
-
-        contents = await file.read()
-        npimg = np.frombuffer(contents, np.uint8)
-        img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-
-        if img is None:
-            raise HTTPException(status_code=400, detail="Image could not be read")
-
-        processed_img, status = processor.preprocess_for_ocr(img)
+        image = await load_image(file)
+        processed_img, status = processor.preprocess_for_ocr(image)
 
         if processed_img is None:
-            raise HTTPException(status_code=400, detail=f"Preprocessing failed: {status}")
+            raise HTTPException(400, f"Preprocessing failed: {status}")
 
-        ocr_text = pytesseract.image_to_string(processed_img, lang='hrv')
-        lines = [line.strip() for line in ocr_text.split("\n") if line.strip()]
+        ocr_lines = run_ocr_with_fallback(processed_img, image)
+        parsed = parser.parse_receipt(ocr_lines, log_debug=True)
 
-        if not lines:
-            raise HTTPException(status_code=400, detail="No text detected")
+        if not parsed.get("total"):
+            raise HTTPException(422, "Total cost not found in receipt")
 
-        result = parser.parse_receipt(lines, log_debug=True)
-
-        # -----------------------
-        # 🧠 Validate OCR result
-        # -----------------------
-        total_cost = result.get("total")
-        if total_cost is None:
-            raise HTTPException(status_code=422, detail="Could not extract total cost from receipt.")
-
-        purchase_date = result.get("date")
-        if purchase_date is None:
-            purchase_date = datetime.utcnow()
-
-        store_name = result.get("store") or "Unknown Store"
-
-        # -----------------------
-        # ✅ Save store
-        # -----------------------
-        store = db.query(models.Store).filter_by(name=store_name).first()
-        if not store:
-            store = models.Store(name=store_name)
-            db.add(store)
-            db.commit()
-            db.refresh(store)
-
-        # -----------------------
-        # ✅ Save receipt
-        # -----------------------
-        receipt = models.Receipt(
-            user_id=user_id,
-            store_id=store.id,
-            unique_key=result.get("receipt_id", f"R-{datetime.utcnow().isoformat()}"),
-            purchase_date=purchase_date,
-            total_cost=total_cost
-        )
-        db.add(receipt)
-        db.flush()
-
-        # -----------------------
-        # ✅ Save items
-        # -----------------------
-        for item in result.get("items", []):
-            db.add(models.ReceiptItem(
-                receipt_id=receipt.id,
-                name=item["name"],
-                quantity=item["quantity"],
-                price_per_item=item["price_per_item"],
-                total_price=item["total"]
-            ))
-
-        db.commit()
+        receipt = save_receipt(db, user_id, parsed)
 
         return {
             "message": "Receipt saved",
-            "store": store.name,
-            "items_saved": len(result.get("items", []))
+            "store": parsed['store'],
+            "items_saved": len(parsed['items'])
+        }
+
+    except Exception as e:
+        logging.error(f"OCR receipt upload failed: {e}")
+        return {"error": str(e)}
+
+
+@router.get("/")
+async def root():
+    """Basic root health check."""
+    return {"message": "Hello from racun-ocr API!"}
+
+
+@router.post("/ocr/")
+async def ocr_preview(file: UploadFile = File(...)):
+    """
+    Processes a receipt image and returns parsed fields without saving to DB.
+    Used for preview/debugging.
+    """
+    try:
+        from app.ocr.image_loader import load_image
+        from app.ocr.ocr_service import run_ocr_with_fallback
+        from app.ocr import processor, parser
+
+        image = await load_image(file)
+        processor.save_debug_image(image, "original")
+
+        processed, status = processor.preprocess_for_ocr(image)
+        if processed is None:
+            raise HTTPException(400, f"Preprocessing failed: {status}")
+
+        processor.save_debug_image(processed, "processed")
+
+        lines = run_ocr_with_fallback(processed, image)
+        parsed = parser.parse_receipt(lines, log_debug=True)
+
+        return {
+            "status": "success",
+            "store": parsed.get("store"),
+            "date": parsed.get("date"),
+            "total": parsed.get("total"),
+            "items": parsed.get("items", []),
+            "lines_raw": lines[:10],  # preview text
+            "line_count": len(lines),
+            "debug_images": ["original.png", "processed.png"]
         }
 
     except Exception as e:
         import traceback
         traceback.print_exc()
-        logging.error(f"OCR receipt upload failed: {e}")
-        return {"error": str(e)}
-
-@router.post("/ocr/")
-async def ocr_endpoint(file: UploadFile = File(...),
-                        db: Session = Depends(get_db)  # ✅ add this
-):
-                       
-    try:
-        # Load uploaded image into OpenCV format
-        contents = await file.read()
-        npimg = np.frombuffer(contents, np.uint8)
-        img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-
-        if img is None:
-            return {"error": "Failed to load image"}
-
-        processor.save_debug_image(img, "original")
-
-        # Use the full preprocessing pipeline: find, crop, enhance
-        processed_img, status = processor.preprocess_for_ocr(img)
-
-        if processed_img is None:
-            return {"error": f"Preprocessing failed: {status}"}
-
-        processor.save_debug_image(processed_img, "text_enhanced")
-
-        # Run OCR on enhanced image
-        ocr_text = pytesseract.image_to_string(processed_img, lang='hrv')
-        print("[OCR RAW TEXT]", repr(ocr_text)) 
-        lines = [line.strip() for line in ocr_text.split("\n") if line.strip()]
-
-        # Fallback: try OCR on cropped (non-enhanced) image if result too weak
-        if len(lines) < 5:
-            logging.info("Fallback: OCR result weak, trying raw cropped image")
-            contour = processor.find_receipt_contour(img)
-            if contour is not None:
-                cropped = processor.crop_by_corners(img, contour)
-                ocr_raw = pytesseract.image_to_string(cropped, lang='hrv')
-                lines_raw = [line.strip() for line in ocr_raw.split("\\n") if line.strip()]
-                if len(lines_raw) > len(lines):
-                    lines = lines_raw
-
-        if not lines:
-            return {"error": "No text detected in image"}
-
-        # Parse text lines into structured receipt fields
-        result = parser.parse_receipt(lines, log_debug=True)
-        from app.db import models
-
-        # -- Save store --
-        store = db.query(models.Store).filter_by(name=result["store"]).first()
-        if not store:
-            store = models.Store(name=result["store"])
-            db.add(store)
-            db.commit()
-            db.refresh(store)
-
-        # -- Create receipt --
-        receipt = models.Receipt(
-            user_id=1,  # ✅ temp for testing; we’ll use real user later
-            store_id=store.id,
-            unique_key=result.get("receipt_id", f"R-{datetime.utcnow().isoformat()}"),
-            purchase_date=result.get("date", datetime.utcnow()),
-            total_cost=result["total"]
-        )
-        db.add(receipt)
-        db.flush()  # get receipt.id without full commit
-
-        # -- Add items --
-        for item in result["items"]:
-            db.add(models.ReceiptItem(
-                receipt_id=receipt.id,
-                name=item["name"],
-                quantity=item["quantity"],
-                price_per_item=item["price_per_item"],
-                total_price=item["total"]
-            ))
-
-        db.commit()
-
-
-        result["debug_info"] = {
-            "raw_lines": lines[:10],
-            "line_source": status,
-            "line_count": len(lines)
-        }
-
-        return result
-
-    except Exception as e:
-        logging.error(f"OCR processing failed: {e}")
-        return {"error": f"Processing failed: {str(e)}"}
+        raise HTTPException(500, f"OCR processing failed: {e}")

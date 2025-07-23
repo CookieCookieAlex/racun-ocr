@@ -1,11 +1,14 @@
-# app/db/crud.py
 from sqlalchemy.orm import Session
 from app.db import models, schemas
 
 def get_or_create_store(db: Session, store_name: str):
+    """
+    Fetch store by name. Create if it doesn't exist.
+    """
     store = db.query(models.Store).filter_by(name=store_name).first()
     if store:
         return store
+
     store = models.Store(name=store_name)
     db.add(store)
     db.commit()
@@ -13,6 +16,10 @@ def get_or_create_store(db: Session, store_name: str):
     return store
 
 def create_receipt(db: Session, receipt_data: schemas.ReceiptCreate):
+    """
+    Create receipt and its items in the database.
+    Assumes user and store are valid.
+    """
     store = get_or_create_store(db, receipt_data.store_name)
 
     receipt = models.Receipt(
@@ -41,7 +48,13 @@ def create_receipt(db: Session, receipt_data: schemas.ReceiptCreate):
     return receipt
 
 def get_receipt(db: Session, receipt_id: int):
+    """
+    Fetch a single receipt by ID.
+    """
     return db.query(models.Receipt).filter(models.Receipt.id == receipt_id).first()
 
 def list_user_receipts(db: Session, user_id: int, limit: int = 50):
+    """
+    List receipts for a given user (default limit 50).
+    """
     return db.query(models.Receipt).filter(models.Receipt.user_id == user_id).limit(limit).all()

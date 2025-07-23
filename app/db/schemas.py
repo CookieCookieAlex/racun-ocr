@@ -1,13 +1,26 @@
-# app/db/schemas.py
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+
+# ------------------------
+# Receipt Item Schemas
+# ------------------------
 
 class ReceiptItemCreate(BaseModel):
     name: str
     quantity: float
     price_per_item: float
     total_price: float
+
+class ReceiptItemOut(ReceiptItemCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+# ------------------------
+# Receipt Schemas
+# ------------------------
 
 class ReceiptCreate(BaseModel):
     user_id: int
@@ -16,12 +29,6 @@ class ReceiptCreate(BaseModel):
     purchase_date: Optional[datetime]
     total_cost: float
     items: List[ReceiptItemCreate]
-
-class ReceiptItemOut(ReceiptItemCreate):
-    id: int
-
-    class Config:
-        orm_mode = True
 
 class ReceiptOut(BaseModel):
     id: int
@@ -34,7 +41,11 @@ class ReceiptOut(BaseModel):
 
     class Config:
         orm_mode = True
-        
+
+# ------------------------
+# User Schemas
+# ------------------------
+
 class UserOut(BaseModel):
     id: int
     username: str
@@ -43,4 +54,3 @@ class UserOut(BaseModel):
 
     class Config:
         orm_mode = True
-

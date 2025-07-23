@@ -1,163 +1,123 @@
 import re
 from datetime import datetime
 
+ocr_fixes = {
+    'ukupko': 'ukupno',
+    'ukupko (eur);': 'ukupno',
+    'ukupko (eur)': 'ukupno',
+    'ukupko:': 'ukupno',
+    'suma': 'ukupno',
+    'totai': 'total',
+    'totál': 'total',
+    'iznos': 'ukupno',
+    'bar,': 'lubar',
+    'lu bar': 'lubar',
+    '"lubar"': 'lubar',
+    'račun broj': 'datum',
+    'račun': 'datum',
+    'u račun': 'datum',
+    'gg': '',
+    'g9': '',
+}
+
+def fix_text(text):
+    for wrong, right in ocr_fixes.items():
+        text = text.replace(wrong, right)
+    return text
+
+def detect_store_name(lines):
+    """Detects the store name from top lines."""
+    for i, line in enumerate(lines[:5]):
+        fixed = fix_text(line.lower())
+        if any(x in fixed for x in ['caffe bar', 'restoran', 'pekara']):
+            return "LuBar" if 'lubar' in fixed else line.strip()
+        elif len(line.strip()) > 3:
+            return line.strip()
+
+    # Fallback: first clean non-numeric line
+    for line in lines[:5]:
+        text = line.strip('"\'')
+        if any(char.isdigit() for char in text) or ',' in text or ':' in text:
+            continue
+        if re.match(r'^[A-ZČĆŽŠĐa-zčćžšđ ]+$', text):
+            return text
+    return "Unknown"
+
+def extract_date(lines):
+    """Extracts date and optional time from lines."""
+    for line in lines:
+        fixed_line = fix_text(line.lower())
+        match = re.search(r'datum\s*[:\-]?\s*(\d{1,2}[.,/-]\d{1,2}[.,/-]\d{2,4})[^0-9]*(\d{1,2}:\d{2})?', fixed_line)
+        if match:
+            try:
+                date = match.group(1).replace(',', '.').replace('/', '.').replace('-', '.')
+                parsed_date = datetime.strptime(date, "%d.%m.%Y").strftime("%d-%m-%Y")
+            except:
+                parsed_date = date
+            return parsed_date, match.group(2)
+    return None, None
+
+def parse_items(lines):
+    """Attempts to extract individual items from OCR lines."""
+    items = []
+    for line in lines:
+        line_fixed = fix_text(line.lower())
+
+        # Skip known labels
+        if any(k in line_fixed for k in ['ukupno', 'total', 'datum', 'vrijeme', 'račun', 'bon', 'pdv', 'tax']):
+            continue
+
+        # Match strict item line
+        item_match = re.match(r'^(.+?)\s+(\d+[xX])?\s*(\d+[,.]\d{2})\s+(\d+[,.]\d{2})$', line)
+        if item_match:
+            try:
+                name = item_match.group(1).strip()
+                quantity = item_match.group(2)[:-1] if item_match.group(2) else '1'
+                price = item_match.group(4).replace(',', '.')
+                items.append({
+                    "name": name,
+                    "quantity": int(quantity),
+                    "price_per_item": float(item_match.group(3).replace(',', '.')),
+                    "total": float(price)
+                })
+                continue
+            except:
+                pass
+
+        # Fallback: find two prices
+        prices = re.findall(r'(\d+[,.]\d{2})', line)
+        if len(prices) >= 2:
+            name = line.split(prices[0])[0].strip()
+            try:
+                items.append({
+                    "name": name,
+                    "quantity": 1,
+                    "price_per_item": float(prices[-2].replace(',', '.')),
+                    "total": float(prices[-1].replace(',', '.'))
+                })
+            except:
+                continue
+    return items
+
 def parse_receipt(lines, log_debug=False):
+    """
+    Main OCR parsing function. Returns structured dict with receipt data.
+    """
     def dbg(msg):
         if log_debug:
             print("[DEBUG]", msg)
 
-    store_name = "Unknown"
-    location_label = None
-    date, time = None, None
-    total = None
-    items = []
+    dbg("Starting parse_receipt")
+    lines = [fix_text(line) for line in lines]
 
-    ocr_fixes = {
-        'ukupko': 'ukupno',
-        'ukupko (eur);': 'ukupno',
-        'ukupko (eur)': 'ukupno',
-        'ukupko:': 'ukupno',
-        'suma': 'ukupno',
-        'totai': 'total',
-        'totál': 'total',
-        'iznos': 'ukupno',
-        'bar,': 'lubar',
-        'lu bar': 'lubar',
-        '"lubar"': 'lubar',
-        'račun broj': 'datum',
-        'račun': 'datum',
-        'u račun': 'datum',
-        'gg': '',
-        'g9': '',
-    }
-
-    # --- Store detection ---
-    for i, line in enumerate(lines[:5]):
-        l = line.lower()
-        for wrong, right in ocr_fixes.items():
-            l = l.replace(wrong, right)
-
-        if any(x in l for x in ['caffe bar', 'restoran', 'pekara']):
-            location_label = line.strip()
-            for offset in [1, 2]:
-                if i + offset < len(lines):
-                    next_line = lines[i + offset].strip()
-                    fixed_next = next_line.lower()
-                    for wrong, right in ocr_fixes.items():
-                        fixed_next = fixed_next.replace(wrong, right)
-                    if "lubar" in fixed_next:
-                        store_name = "LuBar"
-                        break
-                    elif len(next_line) > 3:
-                        store_name = next_line
-            break
-        elif len(line.strip()) > 3 and store_name == "Unknown":
-            store_name = line.strip()
-
-    if store_name == "Unknown":
-        for line in lines[:5]:
-            text = line.strip().strip('"\'')
-            if len(text) > 2 and text.lower() not in ['caffe bar', 'restoran', 'pekara']:
-                if any(char.isdigit() for char in text) or ',' in text or ':' in text:
-                    continue
-                if re.match(r'^[A-ZČĆŽŠĐa-zčćžšđ ]+$', text):
-                    store_name = text
-                    break
-
-    for line in lines[:5]:
-        if "retro" in line.lower():
-            store_name = "Retro"
-            break
-
-    # --- Line processing ---
-    for line in lines:
-        dbg(f"Line: {line}")
-
-        lower_line = line.lower()
-        fixed_line = lower_line
-        for wrong, right in ocr_fixes.items():
-            fixed_line = fixed_line.replace(wrong, right)
-
-        line_fixed = line
-        for wrong, right in ocr_fixes.items():
-            line_fixed = line_fixed.replace(wrong, right)
-
-        skip_keywords = ['ukupno', 'total', 'datum', 'vrijeme', 'račun', 'bon', 'pdv', 'tax']
-        if any(k in fixed_line for k in skip_keywords):
-            dbg("→ Skipped (keyword match)")
-            continue
-
-        if not date or not time:
-            match = re.search(r'datum\\s*[:\\-]?\\s*(\\d{1,2}[.,/-]\\d{1,2}[.,/-]\\d{2,4})[^0-9]*(\\d{1,2}:\\d{2})?', fixed_line)
-            if match:
-                date_raw = match.group(1).replace(',', '.').replace('/', '.').replace('-', '.')
-                time_raw = match.group(2)
-                try:
-                    date = datetime.strptime(date_raw, "%d.%m.%Y").strftime("%d-%m-%Y")
-                except:
-                    date = date_raw
-                if time_raw:
-                    time = time_raw
-                dbg(f"→ Found date/time: {date} {time}")
-        
-        # Try matching a line with two prices (e.g. name 1,00. 3,80)
-        price_parts = re.findall(r'(\d+[.,]\d{2})', line)
-        if len(price_parts) >= 2:
-            name_part = line.split(price_parts[0])[0].strip()
-            if len(name_part) > 2:
-                try:
-                    items.append({
-                        "name": name_part,
-                        "quantity": 1,
-                        "price": float(price_parts[-1].replace(',', '.'))
-                    })
-                    dbg(f"→ Fallback item: {name_part} = {price_parts[-1]}")
-                except:
-                    pass
-                
-
-        item_match = re.match(r'^(.+?)\\s+(\\d+[xX])?\\s*(\\d+[,.]\\d{2})\\s+(\\d+[,.]\\d{2})$', line)
-        if item_match:
-            name = item_match.group(1).strip()
-            quantity = item_match.group(2)[:-1] if item_match.group(2) else '1'
-            price = item_match.group(4).replace(',', '.')
-            items.append({
-                "name": name,
-                "quantity": int(quantity),
-                "price": float(price)
-            })
-            dbg(f"→ Strict item matched: {name} x{quantity} = {price}")
-        else:
-            loose_match = re.search(r'(.+?)\\s+(\\d+[,.]\\d{2})[\\s\\.]*(\\d+[,.]\\d{2})$', line)
-            if loose_match:
-                name = loose_match.group(1).strip()
-                price = loose_match.group(3).replace(',', '.')
-                if len(name) > 2:
-                    items.append({
-                        "name": name,
-                        "quantity": 1,
-                        "price": float(price)
-                    })
-                    dbg(f"→ Loose item matched: {name} = {price}")
-            else:
-                # Try extracting two prices from any line
-                price_parts = re.findall(r'(\\d+[,.]\\d{2})', line)
-                if len(price_parts) >= 2:
-                    name_part = line.split(price_parts[0])[0].strip()
-                    try:
-                        items.append({
-                            "name": name_part,
-                            "quantity": 1,
-                            "price": float(price_parts[-1].replace(',', '.'))
-                        })
-                        dbg(f"→ Fallback item: {name_part} = {price_parts[-1]}")
-                    except:
-                        pass
-                    
+    store = detect_store_name(lines)
+    date, time = extract_date(lines)
+    items = parse_items(lines)
+    total = None  # This could be improved later with total line detection
 
     return {
-        "store": store_name,
-        "location_label": location_label,
+        "store": store,
+        "location_label": None,
         "date": date,
         "time": time,
         "total": total,

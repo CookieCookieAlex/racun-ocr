@@ -10,6 +10,9 @@ from dotenv import load_dotenv
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 load_dotenv()
 
+# This file ensures Alembic picks up our app DB config + models
+
+
 from app import config as app_config
 from app.db.models import Base
 from app.db import models  # force model loading
