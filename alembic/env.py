@@ -16,7 +16,7 @@ from app.db import models  # force model loading
 
 # Alembic configuration
 config = context.config
-config.set_main_option("sqlalchemy.url", app_config.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", str(app_config.DATABASE_URL))
 
 # Logging
 if config.config_file_name is not None:
@@ -26,7 +26,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 # Online-only migration execution
-connectable = create_engine(app_config.DATABASE_URL, poolclass=pool.NullPool)
+connectable = create_engine(str(app_config.DATABASE_URL),connect_args={"connect_timeout": 5}, poolclass=pool.NullPool)
 
 with connectable.connect() as connection:
     context.configure(
