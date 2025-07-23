@@ -1,0 +1,18 @@
+fastapi
+uvicorn[standard]
+sqlalchemy>=2.0
+alembic
+psycopg2-binary
+python-dotenv
+pydantic
+
+opencv-python
+pytesseract
+Pillow
+easyocr
+python-Levenshtein
+
+# Optional tools (uncomment if needed)
+# loguru
+# httpx
+# pytest
