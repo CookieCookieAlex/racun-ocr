@@ -16,3 +16,8 @@ python-Levenshtein
 # loguru
 # httpx
 # pytest
+
+
+
+numpy
+python-multipart  # for file uploads

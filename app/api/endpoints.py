@@ -93,16 +93,19 @@ async def ocr_preview(file: UploadFile = File(...)):
     try:
         from app.ocr.image_loader import load_image
         from app.ocr.ocr_service import run_ocr_with_fallback
-        from app.ocr import processor, parser
+
+        from app.ocr.processor import ReceiptProcessor, preprocess_for_ocr
+        from app.ocr import parser
 
         image = await load_image(file)
-        processor.save_debug_image(image, "original")
+        processor_instance = ReceiptProcessor(debug=True)
+        processor_instance.save_debug_image(image, "original")
 
-        processed, status = processor.preprocess_for_ocr(image)
+        processed, status = preprocess_for_ocr(image)
         if processed is None:
             raise HTTPException(400, f"Preprocessing failed: {status}")
 
-        processor.save_debug_image(processed, "processed")
+        processor_instance.save_debug_image(processed, "processed")
 
         lines = run_ocr_with_fallback(processed, image)
         parsed = parser.parse_receipt(lines, log_debug=True)
