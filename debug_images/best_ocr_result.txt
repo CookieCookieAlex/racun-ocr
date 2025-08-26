@@ -1,0 +1,69 @@
+OCR Score: 169
+Config: minimal_--psm
+Source: image_0
+Text Length: 777 characters
+Lines: 60
+
+==================================================
+EXTRACTED TEXT:
+==================================================
+Cafrre
+"M
+ba La
+Dmagjeva bala 11,21000 Sp 11 t
+'ukvarska 111 b,21000 Sp 15#
+METRO CMMERCE d:0.0.
+018: 0251785253
+DO O GGDV GD o
+HGBB AVA RIKN
+Naziv
+Gijena Kl,
+Izns
+RD O O O DI ARLO HO DLJI FRS NCČ O
+AVA S MLIJEKM VE
+2.40
+1.00
+40
+Do IO DES BENNNSG
+UKUPNO (EUR):
+2.40
+DDO IDGGNSEGNIH
+NVČANICE
+Način plaćanja
+Račun brj
+66572/001/.
+Datum : 25.08,2025 11:02
+Knbar ::55 Sto) :
+Prez na ptršnju...:
+0.00
+Prez (PDV)
+DDD
+0.48
+Rekapitulacija preza
+Bo BEIBBDG EO DLRNING ,
+Stpa
+snvica
+Izns
+PDV
+NKD NO DDGNO "4
+25.00
+1.92
+0.48
+O KIDE DVGBDDK ik
+2 aš.Kd:aab 57 f 105 db 3 a 956624 a 0 d 11 c 96 e 2298
+JIR:b 8154088-7769-4 e 27-ab 66-e 04580 d 93 afb
+DRI BTSPM DDGDBGG
+ri
+id
+maj
+MI-FI:CAFRE BAR MX“
+CDE: 10203040
+HVALA NA PVJERENJU
+DVR
+DDD
+DAO
+DK
+NDDNNI DD
+NAPJNICA
+maee =...
+Sftware BitArtc

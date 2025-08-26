@@ -1,0 +1,1473 @@
+[
+  {
+    "file": "test1.jpg",
+    "timestamp": "2025-08-26T14:13:15.833912",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 2,
+        "total": 4.2,
+        "store": "Caffe bar RETRO",
+        "date": "2025-06-25",
+        "time": "14:02",
+        "raw_text_length": 662,
+        "items": [
+          {
+            "name": "Cijena Kl",
+            "quantity": 1,
+            "price_per_item": 2.1,
+            "total": 2.1
+          },
+          {
+            "name": "Ne:",
+            "quantity": 1,
+            "price_per_item": 2.1,
+            "total": 2.1
+          }
+        ],
+        "full_parsed_data": {
+          "store": "Caffe bar RETRO",
+          "location_label": null,
+          "date": "2025-06-25",
+          "time": "14:02",
+          "total": 4.2,
+          "items": [
+            {
+              "name": "Cijena Kl",
+              "quantity": 1,
+              "price_per_item": 2.1,
+              "total": 2.1
+            },
+            {
+              "name": "Ne:",
+              "quantity": 1,
+              "price_per_item": 2.1,
+              "total": 2.1
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 66,
+          "parsed_items_count": 2
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 126,
+        "text_length": 1150,
+        "text_preview": "i =) 5 = 2 s\n_ ZD B : Caffe bar Peder sr\nape Re žasteeeds l Rugera Bškvića 23, 21000 Split a Za\nSata eee sg SAT brt za ugstiteljstvo l prijevz e a 3\nae Vi. Herbert Hrgvić E E\nfi re. l IB: 42499322680 "
+      },
+      "debug_images": {
+        "total_images": 21,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test10.jpg",
+    "timestamp": "2025-08-26T14:13:50.346354",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 4,
+        "total": 8.6,
+        "store": "Caffe bar “MX",
+        "date": "2025-08-25",
+        "time": "10:47",
+        "raw_text_length": 922,
+        "items": [
+          {
+            "name": "Kl",
+            "quantity": 1,
+            "price_per_item": 2.4,
+            "total": 2.4
+          },
+          {
+            "name": "NGO DRGPUGBGAJ DO DBGGUŠKAGGU",
+            "quantity": 1,
+            "price_per_item": 2.4,
+            "total": 2.4
+          },
+          {
+            "name": "KAPUĆINO",
+            "quantity": 3,
+            "price_per_item": 1.0,
+            "total": 3.2
+          },
+          {
+            "name": "JAMNICA KUSI",
+            "quantity": 1,
+            "price_per_item": 3.2,
+            "total": 3.2
+          }
+        ],
+        "full_parsed_data": {
+          "store": "Caffe bar “MX",
+          "location_label": null,
+          "date": "2025-08-25",
+          "time": "10:47",
+          "total": 8.6,
+          "items": [
+            {
+              "name": "Kl",
+              "quantity": 1,
+              "price_per_item": 2.4,
+              "total": 2.4
+            },
+            {
+              "name": "NGO DRGPUGBGAJ DO DBGGUŠKAGGU",
+              "quantity": 1,
+              "price_per_item": 2.4,
+              "total": 2.4
+            },
+            {
+              "name": "KAPUĆINO",
+              "quantity": 3,
+              "price_per_item": 1.0,
+              "total": 3.2
+            },
+            {
+              "name": "JAMNICA KUSI",
+              "quantity": 1,
+              "price_per_item": 3.2,
+              "total": 3.2
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 93,
+          "parsed_items_count": 4
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 65,
+        "text_length": 318,
+        "text_preview": "ne “ 9 PR\n) / > u pp ž S “sa\n\\ e i > és\nNu\n9/ y< KAVA S MLIJEKM VE 2.40 1.00 2.40 U S /\n= KAPUCINO 3.00 1,0( 3.00 7 r\n& SJ UKUPNO (EUR) : : 8.60\nk Knbar +55 Sto} : ff\nM a i\n: vi 3.00 2.50 0.08 y\nq fiz"
+      },
+      "debug_images": {
+        "total_images": 21,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test11.jpg",
+    "timestamp": "2025-08-26T14:14:09.163243",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 2,
+        "total": 6.5,
+        "store": "caffe",
+        "date": "2025-08-25",
+        "time": "10:22",
+        "raw_text_length": 826,
+        "items": [
+          {
+            "name": "KAPUĆINO",
+            "quantity": 1,
+            "price_per_item": 3.0,
+            "total": 3.0
+          },
+          {
+            "name": "LIMUNADA",
+            "quantity": 1,
+            "price_per_item": 3.0,
+            "total": 3.5
+          }
+        ],
+        "full_parsed_data": {
+          "store": "caffe",
+          "location_label": null,
+          "date": "2025-08-25",
+          "time": "10:22",
+          "total": 6.5,
+          "items": [
+            {
+              "name": "KAPUĆINO",
+              "quantity": 1,
+              "price_per_item": 3.0,
+              "total": 3.0
+            },
+            {
+              "name": "LIMUNADA",
+              "quantity": 1,
+              "price_per_item": 3.0,
+              "total": 3.5
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 86,
+          "parsed_items_count": 2
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 47,
+        "text_length": 262,
+        "text_preview": "A afte bar =\nNERO DMNERCE d\nPA u = SE , 4\nLIMUNADA 0.20 3.50 1.00 SC l (3)\nA VA UKUPNO (EUR): i 6.50 fee l\nRaéun brj 66556/001/ 1 f\nsE a fat\nere\n= rset)\nWI-FI; CAFFE BAR \"MJ\"\nCDE: 10203040\ny HVALA NA "
+      },
+      "debug_images": {
+        "total_images": 21,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test12.jpg",
+    "timestamp": "2025-08-26T14:14:26.796924",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 0.92,
+        "items_count": 5,
+        "total": 1.95,
+        "store": "pjude",
+        "date": null,
+        "time": "14:53:12",
+        "raw_text_length": 993,
+        "items": [
+          {
+            "name": "“neraunmkknennaasrena.umnmnenme",
+            "quantity": 1,
+            "price_per_item": 0.3,
+            "total": 0.3
+          },
+          {
+            "name": "VREĆICA STUDENAC",
+            "quantity": 2,
+            "price_per_item": 1.95,
+            "total": 3.19
+          },
+          {
+            "name": "RTADELA PIK",
+            "quantity": 1,
+            "price_per_item": 3.19,
+            "total": 3.02
+          },
+          {
+            "name": "ssr=zssizzsšrsšs=žšs",
+            "quantity": 1,
+            "price_per_item": 9.06,
+            "total": 9.06
+          },
+          {
+            "name": "e==rzsrsšrnsrezar=",
+            "quantity": 1,
+            "price_per_item": 9.06,
+            "total": 9.06
+          }
+        ],
+        "full_parsed_data": {
+          "store": "pjude",
+          "location_label": null,
+          "date": null,
+          "time": "14:53:12",
+          "total": 1.95,
+          "items": [
+            {
+              "name": "“neraunmkknennaasrena.umnmnenme",
+              "quantity": 1,
+              "price_per_item": 0.3,
+              "total": 0.3
+            },
+            {
+              "name": "VREĆICA STUDENAC",
+              "quantity": 2,
+              "price_per_item": 1.95,
+              "total": 3.19
+            },
+            {
+              "name": "RTADELA PIK",
+              "quantity": 1,
+              "price_per_item": 3.19,
+              "total": 3.02
+            },
+            {
+              "name": "ssr=zssizzsšrsšs=žšs",
+              "quantity": 1,
+              "price_per_item": 9.06,
+              "total": 9.06
+            },
+            {
+              "name": "e==rzsrsšrnsrezar=",
+              "quantity": 1,
+              "price_per_item": 9.06,
+              "total": 9.06
+            }
+          ],
+          "confidence": 0.8,
+          "raw_lines_count": 93,
+          "parsed_items_count": 5
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 129,
+        "text_length": 935,
+        "text_preview": "ČA\nie\nYe\nfe >\neee ES\nSE\nve 2 tastidenac d.o.o.\nso TB 0202902941410). r HRO 2023029348\n£ 2 Brdavanica 421, Tel. 021/465-118\n= Plit, Getaldićeva 4\ng Blagajna 01 Djelatnik 186755\nNaziv artikla Ki Cijena "
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test13.jpg",
+    "timestamp": "2025-08-26T14:14:54.591861",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 4,
+        "total": 16.17,
+        "store": "Studenac",
+        "date": "2025-08-24",
+        "time": "14:53:12",
+        "raw_text_length": 1009,
+        "items": [
+          {
+            "name": "KO E o",
+            "quantity": 1,
+            "price_per_item": 0.3,
+            "total": 0.3
+          },
+          {
+            "name": "TAST SJ PAN",
+            "quantity": 2,
+            "price_per_item": 1.95,
+            "total": 3.19
+          },
+          {
+            "name": "ia",
+            "quantity": 1,
+            "price_per_item": 3.62,
+            "total": 3.62
+          },
+          {
+            "name": "ana",
+            "quantity": 3,
+            "price_per_item": 3.62,
+            "total": 9.06
+          }
+        ],
+        "full_parsed_data": {
+          "store": "Studenac",
+          "location_label": null,
+          "date": "2025-08-24",
+          "time": "14:53:12",
+          "total": 16.17,
+          "items": [
+            {
+              "name": "KO E o",
+              "quantity": 1,
+              "price_per_item": 0.3,
+              "total": 0.3
+            },
+            {
+              "name": "TAST SJ PAN",
+              "quantity": 2,
+              "price_per_item": 1.95,
+              "total": 3.19
+            },
+            {
+              "name": "ia",
+              "quantity": 1,
+              "price_per_item": 3.62,
+              "total": 3.62
+            },
+            {
+              "name": "ana",
+              "quantity": 3,
+              "price_per_item": 3.62,
+              "total": 9.06
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 88,
+          "parsed_items_count": 4
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 146,
+        "text_length": 995,
+        "text_preview": ") 2 B\ns £ /\nF#&A/ Studenac d.o.o.\nt: nis, Četvrt Ribnjak 17 <=\n& / VIB 02023029348 PV br HR 02023029348\nŠ Prdavanica 421, Tel. 021/465-118\ng, Split, Getaldićeva 4\n/ Blagajna 01 Djelatnik 186755\nNaziva"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test14.jpg",
+    "timestamp": "2025-08-26T14:15:22.018886",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 7,
+        "total": 9.51,
+        "store": "IPE HMARKET T- Bško:",
+        "date": "2025-08-22",
+        "time": "8:15",
+        "raw_text_length": 988,
+        "items": [
+          {
+            "name": "IKVICE",
+            "quantity": 1,
+            "price_per_item": 0.83,
+            "total": 0.83
+          },
+          {
+            "name": "kg",
+            "quantity": 1,
+            "price_per_item": 0.83,
+            "total": 0.83
+          },
+          {
+            "name": "EUR/KA",
+            "quantity": 1,
+            "price_per_item": 2.39,
+            "total": 2.39
+          },
+          {
+            "name": "I. GREKI",
+            "quantity": 1,
+            "price_per_item": 3.19,
+            "total": 3.19
+          },
+          {
+            "name": "% 1 ka",
+            "quantity": 0,
+            "price_per_item": 3.19,
+            "total": 0.59
+          },
+          {
+            "name": "MANGO. KM",
+            "quantity": 1,
+            "price_per_item": 0.59,
+            "total": 0.59
+          },
+          {
+            "name": "AVKAl",
+            "quantity": 1,
+            "price_per_item": 1.09,
+            "total": 1.09
+          }
+        ],
+        "full_parsed_data": {
+          "store": "IPE HMARKET T- Bško:",
+          "location_label": null,
+          "date": "2025-08-22",
+          "time": "8:15",
+          "total": 9.51,
+          "items": [
+            {
+              "name": "IKVICE",
+              "quantity": 1,
+              "price_per_item": 0.83,
+              "total": 0.83
+            },
+            {
+              "name": "kg",
+              "quantity": 1,
+              "price_per_item": 0.83,
+              "total": 0.83
+            },
+            {
+              "name": "EUR/KA",
+              "quantity": 1,
+              "price_per_item": 2.39,
+              "total": 2.39
+            },
+            {
+              "name": "I. GREKI",
+              "quantity": 1,
+              "price_per_item": 3.19,
+              "total": 3.19
+            },
+            {
+              "name": "% 1 ka",
+              "quantity": 0,
+              "price_per_item": 3.19,
+              "total": 0.59
+            },
+            {
+              "name": "MANGO. KM",
+              "quantity": 1,
+              "price_per_item": 0.59,
+              "total": 0.59
+            },
+            {
+              "name": "AVKAl",
+              "quantity": 1,
+              "price_per_item": 1.09,
+              "total": 1.09
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 135,
+          "parsed_items_count": 7
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 93,
+        "text_length": 612,
+        "text_preview": "s a dvenlja 10, 10000 Zagret\nsd kvićava 24, 21000 Split\ney PAR = supermarket za svaki danl\nT's $3 1,590, kN) 0.89 EURAg = 0.93 0 1\nje & £ / INA EJ DR-SUN,170 g\n/ i 1.09 1.09 1 ri A 00\nUKUPNO 9.58 PRDA"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test15.jpg",
+    "timestamp": "2025-08-26T14:15:48.172251",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 0.92,
+        "items_count": 6,
+        "total": 21.18,
+        "store": "o. S PARIO",
+        "date": null,
+        "time": "3:19",
+        "raw_text_length": 822,
+        "items": [
+          {
+            "name": "TVRENO",
+            "quantity": 1,
+            "price_per_item": 2.0,
+            "total": 2.0
+          },
+          {
+            "name": "ug",
+            "quantity": 1,
+            "price_per_item": 2.0,
+            "total": 2.0
+          },
+          {
+            "name": "se",
+            "quantity": 1,
+            "price_per_item": 1.59,
+            "total": 1.59
+          },
+          {
+            "name": "VEA BALSAM",
+            "quantity": 1,
+            "price_per_item": 1.59,
+            "total": 1.59
+          },
+          {
+            "name": "EMA PICIGEN",
+            "quantity": 1,
+            "price_per_item": 10.61,
+            "total": 10.61
+          },
+          {
+            "name": "il",
+            "quantity": 1,
+            "price_per_item": 10.61,
+            "total": 10.61
+          }
+        ],
+        "full_parsed_data": {
+          "store": "o. S PARIO",
+          "location_label": null,
+          "date": null,
+          "time": "3:19",
+          "total": 21.18,
+          "items": [
+            {
+              "name": "TVRENO",
+              "quantity": 1,
+              "price_per_item": 2.0,
+              "total": 2.0
+            },
+            {
+              "name": "ug",
+              "quantity": 1,
+              "price_per_item": 2.0,
+              "total": 2.0
+            },
+            {
+              "name": "se",
+              "quantity": 1,
+              "price_per_item": 1.59,
+              "total": 1.59
+            },
+            {
+              "name": "VEA BALSAM",
+              "quantity": 1,
+              "price_per_item": 1.59,
+              "total": 1.59
+            },
+            {
+              "name": "EMA PICIGEN",
+              "quantity": 1,
+              "price_per_item": 10.61,
+              "total": 10.61
+            },
+            {
+              "name": "il",
+              "quantity": 1,
+              "price_per_item": 10.61,
+              "total": 10.61
+            }
+          ],
+          "confidence": 0.8,
+          "raw_lines_count": 123,
+          "parsed_items_count": 6
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 152,
+        "text_length": 574,
+        "text_preview": "S PARIO\nAR i\nKA\npe\n2710\n4 k\nPCRS\nNO\nKi\n21\nMEDAL\n06\nimo\nrket 20\nskl\nla\n08.2025,\nat\nJEK MEN\nKi\n99\nEA\nAK\nmi\n35\nKREMA\nIGIGIN 50 m\n10.61\nti\nNIVEA 200\nnl\n10\n5.59\n59\nUKUPNO\n21\n78\nACAN\nTERCARD\n18\nSPO 1241\nMID"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test2.jpg",
+    "timestamp": "2025-08-26T14:16:12.472780",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 0.92,
+        "items_count": 6,
+        "total": 71.87,
+        "store": "Pm “g šum",
+        "date": null,
+        "time": "20:91",
+        "raw_text_length": 342,
+        "items": [
+          {
+            "name": "FISKALNI RACUN l",
+            "quantity": 1,
+            "price_per_item": 12.79,
+            "total": 12.79
+          },
+          {
+            "name": "D 005. 20:",
+            "quantity": 1,
+            "price_per_item": 12.79,
+            "total": 12.79
+          },
+          {
+            "name": "TREGER MALA",
+            "quantity": 1,
+            "price_per_item": 0.1,
+            "total": 0.1
+          },
+          {
+            "name": "BLANC",
+            "quantity": 4,
+            "price_per_item": 4.0,
+            "total": 14.57
+          },
+          {
+            "name": "VE: 17,00%",
+            "quantity": 1,
+            "price_per_item": 14.57,
+            "total": 14.57
+          },
+          {
+            "name": "raTAL:",
+            "quantity": 1,
+            "price_per_item": 17.05,
+            "total": 17.05
+          }
+        ],
+        "full_parsed_data": {
+          "store": "Pm “g šum",
+          "location_label": null,
+          "date": null,
+          "time": "20:91",
+          "total": 71.87,
+          "items": [
+            {
+              "name": "FISKALNI RACUN l",
+              "quantity": 1,
+              "price_per_item": 12.79,
+              "total": 12.79
+            },
+            {
+              "name": "D 005. 20:",
+              "quantity": 1,
+              "price_per_item": 12.79,
+              "total": 12.79
+            },
+            {
+              "name": "TREGER MALA",
+              "quantity": 1,
+              "price_per_item": 0.1,
+              "total": 0.1
+            },
+            {
+              "name": "BLANC",
+              "quantity": 4,
+              "price_per_item": 4.0,
+              "total": 14.57
+            },
+            {
+              "name": "VE: 17,00%",
+              "quantity": 1,
+              "price_per_item": 14.57,
+              "total": 14.57
+            },
+            {
+              "name": "raTAL:",
+              "quantity": 1,
+              "price_per_item": 17.05,
+              "total": 17.05
+            }
+          ],
+          "confidence": 0.8,
+          "raw_lines_count": 31,
+          "parsed_items_count": 6
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Bosnian + Croatian + English",
+        "score": 143,
+        "text_length": 508,
+        "text_preview": "ee NO ARES GH NR 11-42-27. jag stat\nart (DSS fRamntajeltanjece\nDas\nes\n‘Tesseract phate 2825-01-12. 13-42-27. dg utput\n(O 86 ta jtitje\nbi\nm sma\n(JE KE EILTTNE\nSarajevo\nPdružnica Mstar- Prdavnica br. 13"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test3.jpg",
+    "timestamp": "2025-08-26T14:16:35.806100",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 0.92,
+        "items_count": 2,
+        "total": 4.2,
+        "store": "Caffe bar kr",
+        "date": null,
+        "time": "12:36",
+        "raw_text_length": 928,
+        "items": [
+          {
+            "name": "PO O DAN GD Rn bbađabsnuu",
+            "quantity": 1,
+            "price_per_item": 2.1,
+            "total": 2.1
+          },
+          {
+            "name": "vk",
+            "quantity": 1,
+            "price_per_item": 2.1,
+            "total": 2.1
+          }
+        ],
+        "full_parsed_data": {
+          "store": "Caffe bar kr",
+          "location_label": null,
+          "date": null,
+          "time": "12:36",
+          "total": 4.2,
+          "items": [
+            {
+              "name": "PO O DAN GD Rn bbađabsnuu",
+              "quantity": 1,
+              "price_per_item": 2.1,
+              "total": 2.1
+            },
+            {
+              "name": "vk",
+              "quantity": 1,
+              "price_per_item": 2.1,
+              "total": 2.1
+            }
+          ],
+          "confidence": 0.8,
+          "raw_lines_count": 94,
+          "parsed_items_count": 2
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 85,
+        "text_length": 861,
+        "text_preview": "t St Sres Me ae“ Sei et Rs aad =~ a +2 fa l\nad MR es, Ruđera Bškvića 23, 21000 Split = ah\nShemmaeeresl SAT brt zal ugst iel)stvo l prijevz zar pi\n(ike (GZ ee Vi. Herbert Hrgvić Jey ase\nS FN Gta, ee E "
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test4.jpg",
+    "timestamp": "2025-08-26T14:17:11.487730",
+    "image_size": [
+      2048,
+      1536,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 1,
+        "total": 3.8,
+        "store": "caffe bar LuBar",
+        "date": "2025-08-28",
+        "time": "11:52",
+        "raw_text_length": 856,
+        "items": [
+          {
+            "name": "Cijena Kl:",
+            "quantity": 0,
+            "price_per_item": 3.8,
+            "total": 1.0
+          }
+        ],
+        "full_parsed_data": {
+          "store": "caffe bar LuBar",
+          "location_label": null,
+          "date": "2025-08-28",
+          "time": "11:52",
+          "total": 3.8,
+          "items": [
+            {
+              "name": "Cijena Kl:",
+              "quantity": 0,
+              "price_per_item": 3.8,
+              "total": 1.0
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 74,
+          "parsed_items_count": 1
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 102,
+        "text_length": 795,
+        "text_preview": "prt se hme end : insert delete la] CE 4/- ©\nF 9 F 10_ FI, FY Rey i tae\nl Ku 2 caffe ban\n— ti —_—\ne a D R.Bkškvića 18 A, 21000 Sp) : SRS\n3 HS Isis Claes eee === =\nT.P.Marvića, 21210 Mravine\nIB: 5524849"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test5.jpg",
+    "timestamp": "2025-08-26T14:17:44.009846",
+    "image_size": [
+      2048,
+      1536,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 0.92,
+        "items_count": 1,
+        "total": 1.0,
+        "store": "Caffe bar LuBar",
+        "date": null,
+        "time": "11:52",
+        "raw_text_length": 664,
+        "items": [
+          {
+            "name": "PRIRDNA NARANČADA",
+            "quantity": 4,
+            "price_per_item": 3.8,
+            "total": 1.0
+          }
+        ],
+        "full_parsed_data": {
+          "store": "Caffe bar LuBar",
+          "location_label": null,
+          "date": null,
+          "time": "11:52",
+          "total": 1.0,
+          "items": [
+            {
+              "name": "PRIRDNA NARANČADA",
+              "quantity": 4,
+              "price_per_item": 3.8,
+              "total": 1.0
+            }
+          ],
+          "confidence": 0.8,
+          "raw_lines_count": 66,
+          "parsed_items_count": 1
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Bosnian + Croatian + English",
+        "score": 81,
+        "text_length": 656,
+        "text_preview": "SS KI Panama, ie vo\na SE S, Fo, A hme ( RAJE SSS\nwit j U o, mio L sma delete ĆE\nGo MSR ate eet S NM? :\nANDE š tck A * =\nNU SS SEN U No 2 NN\nJ LS GS SI adu Ea MME e ME U\nS NAl aN a [RE SS PEDER\ns SRS) "
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test6.jpg",
+    "timestamp": "2025-08-26T14:18:20.274073",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 5,
+        "total": 9.29,
+        "store": "M e",
+        "date": "2025-07-09",
+        "time": "09:45",
+        "raw_text_length": 785,
+        "items": [
+          {
+            "name": "k*",
+            "quantity": 1,
+            "price_per_item": 7.91,
+            "total": 7.91
+          },
+          {
+            "name": "VE",
+            "quantity": 0,
+            "price_per_item": 7.91,
+            "total": 1.34
+          },
+          {
+            "name": "PDU",
+            "quantity": 1,
+            "price_per_item": 1.34,
+            "total": 1.34
+          },
+          {
+            "name": "TTAL :",
+            "quantity": 1,
+            "price_per_item": 9.29,
+            "total": 9.29
+          },
+          {
+            "name": "UPLAĆENO :",
+            "quantity": 1,
+            "price_per_item": 9.29,
+            "total": 9.29
+          }
+        ],
+        "full_parsed_data": {
+          "store": "M e",
+          "location_label": null,
+          "date": "2025-07-09",
+          "time": "09:45",
+          "total": 9.29,
+          "items": [
+            {
+              "name": "k*",
+              "quantity": 1,
+              "price_per_item": 7.91,
+              "total": 7.91
+            },
+            {
+              "name": "VE",
+              "quantity": 0,
+              "price_per_item": 7.91,
+              "total": 1.34
+            },
+            {
+              "name": "PDU",
+              "quantity": 1,
+              "price_per_item": 1.34,
+              "total": 1.34
+            },
+            {
+              "name": "TTAL :",
+              "quantity": 1,
+              "price_per_item": 9.29,
+              "total": 9.29
+            },
+            {
+              "name": "UPLAĆENO :",
+              "quantity": 1,
+              "price_per_item": 9.29,
+              "total": 9.29
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 71,
+          "parsed_items_count": 5
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 97,
+        "text_length": 881,
+        "text_preview": "MB Se Se bb PS s\nMeg La E de Neal, SP wee\ny l RR ER EN: PC PAM eo i pa no Srna, % 7\n, NE lD KA is\nay I BEI = > m “ Bees 4. \\\nSJJ pe MER) g INGO“ d.o.0. EXPRT. IMPRT TUZLA SLANI\nLL die. Ko Pare ay) 2 “"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test7.jpg",
+    "timestamp": "2025-08-26T14:18:52.875787",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 7,
+        "total": 66.12,
+        "store": "aca dšfarištsrsssssssu",
+        "date": "2105-04-08",
+        "time": null,
+        "raw_text_length": 385,
+        "items": [
+          {
+            "name": "NI (TN La",
+            "quantity": 1,
+            "price_per_item": 0.1,
+            "total": 0.1
+          },
+          {
+            "name": "e TREGER MALA",
+            "quantity": 1,
+            "price_per_item": 0.1,
+            "total": 0.1
+          },
+          {
+            "name": "pan",
+            "quantity": 1,
+            "price_per_item": 14.67,
+            "total": 14.67
+          },
+          {
+            "name": "Ena",
+            "quantity": 1,
+            "price_per_item": 14.67,
+            "total": 14.67
+          },
+          {
+            "name": "MN",
+            "quantity": 1,
+            "price_per_item": 2.48,
+            "total": 2.48
+          },
+          {
+            "name": "mE",
+            "quantity": 7,
+            "price_per_item": 2.48,
+            "total": 17.05
+          },
+          {
+            "name": "GTVINA",
+            "quantity": 1,
+            "price_per_item": 17.05,
+            "total": 17.05
+          }
+        ],
+        "full_parsed_data": {
+          "store": "aca dšfarištsrsssssssu",
+          "location_label": null,
+          "date": "2105-04-08",
+          "time": null,
+          "total": 66.12,
+          "items": [
+            {
+              "name": "NI (TN La",
+              "quantity": 1,
+              "price_per_item": 0.1,
+              "total": 0.1
+            },
+            {
+              "name": "e TREGER MALA",
+              "quantity": 1,
+              "price_per_item": 0.1,
+              "total": 0.1
+            },
+            {
+              "name": "pan",
+              "quantity": 1,
+              "price_per_item": 14.67,
+              "total": 14.67
+            },
+            {
+              "name": "Ena",
+              "quantity": 1,
+              "price_per_item": 14.67,
+              "total": 14.67
+            },
+            {
+              "name": "MN",
+              "quantity": 1,
+              "price_per_item": 2.48,
+              "total": 2.48
+            },
+            {
+              "name": "mE",
+              "quantity": 7,
+              "price_per_item": 2.48,
+              "total": 17.05
+            },
+            {
+              "name": "GTVINA",
+              "quantity": 1,
+              "price_per_item": 17.05,
+              "total": 17.05
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 55,
+          "parsed_items_count": 7
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 89,
+        "text_length": 750,
+        "text_preview": "za.\" ma u LEN a a\n“TS “ ~ \\ ;\nPo DE ca) \"KNZUM\" 0, 0,Sarajevo JN\nETO < Ny Pdružnica Mstar-Prdavnica br. 130\ndE CIME. Ne Splitka(Tranica) br. 60\nnae ee AN Sa 88000 Mstar \"4\nNES. me 8: Crs 00 z 03 A\neye"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test8.jpg",
+    "timestamp": "2025-08-26T14:19:19.797162",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 0.8799999999999999,
+        "items_count": 0,
+        "total": 3.2,
+        "store": "carre bar",
+        "date": "2025-08-25",
+        "time": "11:04",
+        "raw_text_length": 788,
+        "items": [],
+        "full_parsed_data": {
+          "store": "carre bar",
+          "location_label": null,
+          "date": "2025-08-25",
+          "time": "11:04",
+          "total": 3.2,
+          "items": [],
+          "confidence": 0.7,
+          "raw_lines_count": 63,
+          "parsed_items_count": 0
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "Croatian + English",
+        "score": 56,
+        "text_length": 360,
+        "text_preview": "\\ e &\n: AA 7 NS\n= A y h UKUPNO (EUR) 3.20\n< Pm: JIR:008 b 3 ea 0-22 fa-4 b 97-99 d 5-1 dbd 9 f 5 a 936 b }\na Erie i\nq tera seen I\n= : mie Slo) a.\n3 (I-FI:CAPFE BAR \"MA\"\n4 DE 10203040\n3 HVALA NA PVJERE"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  },
+  {
+    "file": "test9.jpg",
+    "timestamp": "2025-08-26T14:19:39.444685",
+    "image_size": [
+      1280,
+      960,
+      3
+    ],
+    "tests": {
+      "full_pipeline": {
+        "success": true,
+        "confidence": 1.0,
+        "items_count": 2,
+        "total": 2.4,
+        "store": "Cafrre",
+        "date": "2025-08-25",
+        "time": "11:02",
+        "raw_text_length": 777,
+        "items": [
+          {
+            "name": "Gijena Kl",
+            "quantity": 1,
+            "price_per_item": 2.4,
+            "total": 2.4
+          },
+          {
+            "name": "RD O O O DI ARLO HO DLJI FRS NCČ O",
+            "quantity": 0,
+            "price_per_item": 2.4,
+            "total": 1.0
+          }
+        ],
+        "full_parsed_data": {
+          "store": "Cafrre",
+          "location_label": null,
+          "date": "2025-08-25",
+          "time": "11:02",
+          "total": 2.4,
+          "items": [
+            {
+              "name": "Gijena Kl",
+              "quantity": 1,
+              "price_per_item": 2.4,
+              "total": 2.4
+            },
+            {
+              "name": "RD O O O DI ARLO HO DLJI FRS NCČ O",
+              "quantity": 0,
+              "price_per_item": 2.4,
+              "total": 1.0
+            }
+          ],
+          "confidence": 1.0,
+          "raw_lines_count": 60,
+          "parsed_items_count": 2
+        }
+      },
+      "image_processing": {
+        "success": true,
+        "status": "success_with_crop",
+        "images_generated": 2,
+        "info": {}
+      },
+      "direct_ocr": {
+        "success": true,
+        "best_language": "English only",
+        "score": 70,
+        "text_length": 281,
+        "text_preview": "Pate\nSE\ni)\neae\nen\nesa\nVY\nyy\ny &\nNM\n7;\nne\nwe\nWw\n40\ni,\nGf\nYo\nURL\n(EUR):\n40\nja\nNI\nil\n5 0\n02\nKnabar\n55)\nna\nsn)\n(4\nRekapttull\nJa pl\nStpa\nIzno\nPDY\n1.92\naa\n0 d 1 c\n45\nBae\nA]\nah\nEs\nmiHt\nvt\nWh\nMX”\nCl\nWALA Be N"
+      },
+      "debug_images": {
+        "total_images": 22,
+        "key_images_found": [
+          "step7_cropped_and_corrected.png",
+          "final_best_ocr_source.png"
+        ]
+      }
+    }
+  }
+]

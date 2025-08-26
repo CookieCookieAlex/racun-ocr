@@ -1,0 +1,183 @@
+{
+  "timestamp": "2025-08-26T14:28:42.934620",
+  "total_images": 15,
+  "success_rates": {
+    "full_pipeline": "15/15 (100.0%)",
+    "image_processing": "15/15 (100.0%)",
+    "ocr": "15/15 (100.0%)"
+  },
+  "confidence_stats": {
+    "average": 0.97,
+    "min": 0.88,
+    "max": 1.0,
+    "count": 15
+  },
+  "failed_results": [],
+  "successful_results": [
+    {
+      "file": "test1.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "Caffe bar RETRO",
+      "total": 4.2,
+      "items_count": 2,
+      "date": "2025-06-25",
+      "time": "14:02",
+      "error": null
+    },
+    {
+      "file": "test10.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "Caffe bar “MX",
+      "total": 8.6,
+      "items_count": 4,
+      "date": "2025-08-25",
+      "time": "10:47",
+      "error": null
+    },
+    {
+      "file": "test11.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "caffe",
+      "total": 6.5,
+      "items_count": 2,
+      "date": "2025-08-25",
+      "time": "10:22",
+      "error": null
+    },
+    {
+      "file": "test12.jpg",
+      "success": true,
+      "confidence": 0.92,
+      "store": "pjude",
+      "total": 1.95,
+      "items_count": 5,
+      "date": null,
+      "time": "14:53:12",
+      "error": null
+    },
+    {
+      "file": "test13.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "Studenac",
+      "total": 16.17,
+      "items_count": 4,
+      "date": "2025-08-24",
+      "time": "14:53:12",
+      "error": null
+    },
+    {
+      "file": "test14.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "IPE HMARKET T- Bško:",
+      "total": 9.51,
+      "items_count": 7,
+      "date": "2025-08-22",
+      "time": "8:15",
+      "error": null
+    },
+    {
+      "file": "test15.jpg",
+      "success": true,
+      "confidence": 0.92,
+      "store": "o. S PARIO",
+      "total": 21.18,
+      "items_count": 6,
+      "date": null,
+      "time": "3:19",
+      "error": null
+    },
+    {
+      "file": "test2.jpg",
+      "success": true,
+      "confidence": 0.92,
+      "store": "Pm “g šum",
+      "total": 71.87,
+      "items_count": 6,
+      "date": null,
+      "time": "20:91",
+      "error": null
+    },
+    {
+      "file": "test3.jpg",
+      "success": true,
+      "confidence": 0.92,
+      "store": "Caffe bar kr",
+      "total": 4.2,
+      "items_count": 2,
+      "date": null,
+      "time": "12:36",
+      "error": null
+    },
+    {
+      "file": "test4.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "caffe bar LuBar",
+      "total": 3.8,
+      "items_count": 1,
+      "date": "2025-08-28",
+      "time": "11:52",
+      "error": null
+    },
+    {
+      "file": "test5.jpg",
+      "success": true,
+      "confidence": 0.92,
+      "store": "Caffe bar LuBar",
+      "total": 1.0,
+      "items_count": 1,
+      "date": null,
+      "time": "11:52",
+      "error": null
+    },
+    {
+      "file": "test6.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "M e",
+      "total": 9.29,
+      "items_count": 5,
+      "date": "2025-07-09",
+      "time": "09:45",
+      "error": null
+    },
+    {
+      "file": "test7.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "aca dšfarištsrsssssssu",
+      "total": 66.12,
+      "items_count": 7,
+      "date": "2105-04-08",
+      "time": null,
+      "error": null
+    },
+    {
+      "file": "test8.jpg",
+      "success": true,
+      "confidence": 0.8799999999999999,
+      "store": "carre bar",
+      "total": 3.2,
+      "items_count": 0,
+      "date": "2025-08-25",
+      "time": "11:04",
+      "error": null
+    },
+    {
+      "file": "test9.jpg",
+      "success": true,
+      "confidence": 1.0,
+      "store": "Cafrre",
+      "total": 2.4,
+      "items_count": 2,
+      "date": "2025-08-25",
+      "time": "11:02",
+      "error": null
+    }
+  ]
+}
